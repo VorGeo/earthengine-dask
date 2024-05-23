@@ -11,3 +11,6 @@ platforms = ["osx-arm64"]
 [dependencies]
 python = "3.11.*"
 nbdev = ">=2.2.10,<2.3"
+coiled = ">=1.24.0,<1.25"
+jupyter = ">=1.0.0,<1.1"
+earthengine-api = ">=0.1.404,<0.2"
