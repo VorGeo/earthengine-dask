@@ -9,3 +9,5 @@ platforms = ["osx-arm64"]
 [tasks]
 
 [dependencies]
+python = "3.11.*"
+nbdev = ">=2.2.10,<2.3"
