@@ -5,4 +5,11 @@ d = { 'settings': { 'branch': 'master',
                 'doc_host': 'https://VorGeo.github.io',
                 'git_url': 'https://github.com/VorGeo/earthengine-dask',
                 'lib_path': 'earthengine_dask'},
-  'syms': {'earthengine_dask.core': {'earthengine_dask.core.foo': ('core.html#foo', 'earthengine_dask/core.py')}}}
+  'syms': { 'earthengine_dask.core': { 'earthengine_dask.core.ClientGEE': ('core.html#clientgee', 'earthengine_dask/core.py'),
+                                       'earthengine_dask.core.ClientGEE.__init__': ('core.html#__init__', 'earthengine_dask/core.py'),
+                                       'earthengine_dask.core.ClusterGEE': ('core.html#clustergee', 'earthengine_dask/core.py'),
+                                       'earthengine_dask.core.ClusterGEE.__init__': ('core.html#__init__', 'earthengine_dask/core.py'),
+                                       'earthengine_dask.core.ClusterGEE.get_client': ('core.html#get_client', 'earthengine_dask/core.py'),
+                                       'earthengine_dask.core.InitEarthEngine': ('core.html#initearthengine', 'earthengine_dask/core.py'),
+                                       'earthengine_dask.core.InitEarthEngine.__init__': ('core.html#__init__', 'earthengine_dask/core.py'),
+                                       'earthengine_dask.core.InitEarthEngine.setup': ('core.html#setup', 'earthengine_dask/core.py')}}}
