@@ -103,16 +103,6 @@ df = pd.DataFrame(results)
 df
 ```
 
-Display a scatter plot of the data.
-
-``` python
-alt.Chart(df).mark_circle(size=60).encode(
-    x='area_km2',
-    y='mean_elev',
-    tooltip=['country']
-).interactive()
-```
-
 # Shut down the cluster
 
 ``` python
