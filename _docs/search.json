@@ -60,8 +60,8 @@
     ]
   },
   {
-    "objectID": "00_core.html",
-    "href": "00_core.html",
+    "objectID": "core.html",
+    "href": "core.html",
     "title": "core",
     "section": "",
     "text": "source",
@@ -70,8 +70,8 @@
     ]
   },
   {
-    "objectID": "00_core.html#authenticate-initialize-earth-engine",
-    "href": "00_core.html#authenticate-initialize-earth-engine",
+    "objectID": "core.html#authenticate-initialize-earth-engine",
+    "href": "core.html#authenticate-initialize-earth-engine",
     "title": "core",
     "section": "Authenticate & Initialize Earth Engine",
     "text": "Authenticate & Initialize Earth Engine\nGet credentials and the GCP project ID, authenticating if necessary.\n\ntry:\n    credentials, project_id = google.auth.default()\nexcept google.auth.exceptions.DefaultCredentialsError:\n    !gcloud auth application-default login\n    credentials, project_id = google.auth.default()\n\nee.Initialize(credentials=credentials, project=project_id)",
