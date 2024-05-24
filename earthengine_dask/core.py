@@ -9,9 +9,11 @@ import logging
 import coiled
 import dask.distributed
 import ee
-import google.auth
 
 # %% ../00_core.ipynb 4
+import google.auth
+
+# %% ../00_core.ipynb 5
 class InitEarthEngine(dask.distributed.WorkerPlugin):
     def __init__(self, **kwargs):
         logging.info('InitEarthEngine init')  # This appears in the notebook output where the cluster is initiated.
