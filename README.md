@@ -14,13 +14,13 @@ documentation.
 - A [Coiled](https://www.coiled.io/) account that is [setup to use the
   GCP project](https://docs.coiled.io/user_guide/setup/gcp/cli.html).
 
-## Install with PIP
+# Installation
 
 ``` sh
-pip install earthengine_dask
+TODO...
 ```
 
-## How to use
+# How to use
 
 ## Import Python packages
 
@@ -46,7 +46,7 @@ except google.auth.exceptions.DefaultCredentialsError:
 ee.Initialize(credentials=credentials, project=project_id)
 ```
 
-# Start Dask Cluster
+## Start Dask Cluster
 
 Start up a Earth Engine enabled cluster. This may take a few minutes to
 complete.
@@ -67,7 +67,7 @@ client = cluster.get_client()
 client
 ```
 
-# Submit Jobs
+## Submit Jobs
 
 Test it out by: - Defining a function that can be distributed, -
 Submitting jobs running the function to workers, - Gathering the results
@@ -103,7 +103,7 @@ df = pd.DataFrame(results)
 df
 ```
 
-# Shut down the cluster
+## Shut down the cluster
 
 ``` python
 cluster.shutdown()
