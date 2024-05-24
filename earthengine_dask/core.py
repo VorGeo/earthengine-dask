@@ -7,16 +7,16 @@ __all__ = ['InitEarthEngine', 'ClusterGEE']
 import logging
 
 # %% ../00_core.ipynb 4
-import coiled
+import ee
 
 # %% ../00_core.ipynb 5
 import dask.distributed
 
 # %% ../00_core.ipynb 6
-import ee
+import google.auth
 
 # %% ../00_core.ipynb 7
-import google.auth
+import coiled
 
 # %% ../00_core.ipynb 8
 class InitEarthEngine(dask.distributed.WorkerPlugin):

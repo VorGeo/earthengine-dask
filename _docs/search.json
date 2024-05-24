@@ -60,6 +60,16 @@
     ]
   },
   {
+    "objectID": "00_core.html",
+    "href": "00_core.html",
+    "title": "core",
+    "section": "",
+    "text": "source",
+    "crumbs": [
+      "core"
+    ]
+  },
+  {
     "objectID": "00_core.html#authenticate-initialize-earth-engine",
     "href": "00_core.html#authenticate-initialize-earth-engine",
     "title": "core",
