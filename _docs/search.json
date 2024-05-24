@@ -68,15 +68,5 @@
     "crumbs": [
       "core"
     ]
-  },
-  {
-    "objectID": "Untitled.html",
-    "href": "Untitled.html",
-    "title": "earthengine-dask",
-    "section": "",
-    "text": "adm2 = ee.FeatureCollection(\"WM/geoLab/geoBoundaries/600/ADM2\")\n\n\n\nforest_baseline =",
-    "crumbs": [
-      "Untitled.html"
-    ]
   }
 ]
