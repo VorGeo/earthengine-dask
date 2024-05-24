@@ -9,16 +9,16 @@ import logging
 import coiled
 import dask.distributed
 import ee
+import google.auth
 
-
-# %% ../00_core.ipynb 5
+# %% ../00_core.ipynb 4
 class InitEarthEngine(dask.distributed.WorkerPlugin):
     def __init__(self, **kwargs):
         logging.info('InitEarthEngine init')  # This appears in the notebook output where the cluster is initiated.
         self.kwargs = kwargs
 
     def setup(self, worker):
-        logging._ExcInfoType('InitEarthEngine setup')  # This appears in the dask cluster logs.
+        logging.info('InitEarthEngine setup')  # This appears in the dask cluster logs.
         import ee
         ee.Initialize(**self.kwargs)
         

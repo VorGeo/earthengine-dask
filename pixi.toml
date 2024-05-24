@@ -7,6 +7,7 @@ channels = ["conda-forge"]
 platforms = ["osx-arm64"]
 
 [tasks]
+jlab = "jupyter lab --ContentsManager.allow_hidden=True"
 
 [dependencies]
 python = "3.11.*"
