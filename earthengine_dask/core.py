@@ -6,14 +6,19 @@ __all__ = ['InitEarthEngine', 'ClusterGEE']
 # %% ../00_core.ipynb 3
 import logging
 
-import coiled
-import dask.distributed
-import ee
-
 # %% ../00_core.ipynb 4
-import google.auth
+import coiled
 
 # %% ../00_core.ipynb 5
+import dask.distributed
+
+# %% ../00_core.ipynb 6
+import ee
+
+# %% ../00_core.ipynb 7
+import google.auth
+
+# %% ../00_core.ipynb 8
 class InitEarthEngine(dask.distributed.WorkerPlugin):
     def __init__(self, **kwargs):
         logging.info('InitEarthEngine init')  # This appears in the notebook output where the cluster is initiated.
