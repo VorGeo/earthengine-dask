@@ -81,6 +81,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/fsspec-2024.5.0-pyhff2d567_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/gflags-2.2.2-hc88da5d_1004.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/ghapi-1.0.5-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/ghp-import-2.1.0-pyhd8ed1ab_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/gilknocker-0.4.1-py311h0563b04_3.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/glog-0.7.0-hc6770e3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/google-api-core-2.19.0-pyhd8ed1ab_0.conda
@@ -1640,6 +1641,21 @@ packages:
   license_family: APACHE
   size: 57265
   timestamp: 1712356162643
+- kind: conda
+  name: ghp-import
+  version: 2.1.0
+  build: pyhd8ed1ab_0
+  subdir: noarch
+  noarch: python
+  url: https://conda.anaconda.org/conda-forge/noarch/ghp-import-2.1.0-pyhd8ed1ab_0.tar.bz2
+  sha256: 097d9b4c946b195800bc68f68393370049238509b08ef828c06fbf481bbc139c
+  md5: 6d8d61116031a3f5b1f32e7899785866
+  depends:
+  - python >=3.6
+  - python-dateutil >=2.8.1
+  license: LicenseRef-Tumbolia-Public
+  size: 15504
+  timestamp: 1651585848291
 - kind: conda
   name: gilknocker
   version: 0.4.1
