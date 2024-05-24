@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Scale up concurrent requests to Earth Engine interactive endpoints with Dask">
+<meta name="description" content="Core functionality for distributing Earth Engine requests among Dask workers.">
 
-<title>earthengine-dask</title>
+<title>earthengine-dask - core</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -58,7 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -101,12 +101,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="earthengine-dask">
+<meta property="og:title" content="earthengine-dask - core">
+<meta property="og:description" content="Scale up concurrent requests to Earth Engine interactive endpoints with Dask">
 <meta property="og:site_name" content="earthengine-dask">
-<meta name="twitter:title" content="earthengine-dask">
+<meta name="twitter:title" content="earthengine-dask - core">
+<meta name="twitter:description" content="Scale up concurrent requests to Earth Engine interactive endpoints with Dask">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -143,7 +149,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">earthengine-dask</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./00_core.html">core</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -157,13 +163,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">earthengine-dask</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./00_core.html" class="sidebar-item-text sidebar-link">
+  <a href="./00_core.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">core</span></a>
   </div>
 </li>
@@ -183,16 +189,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link active" data-scroll-target="#prerequisites">Prerequisites</a></li>
-  <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a></li>
-  <li><a href="#how-to-use" id="toc-how-to-use" class="nav-link" data-scroll-target="#how-to-use">How to use</a>
+  <li><a href="#clustergee" id="toc-clustergee" class="nav-link active" data-scroll-target="#clustergee">ClusterGEE</a></li>
+  <li><a href="#initearthengine" id="toc-initearthengine" class="nav-link" data-scroll-target="#initearthengine">InitEarthEngine</a></li>
+  <li><a href="#try-it-out" id="toc-try-it-out" class="nav-link" data-scroll-target="#try-it-out">Try it out</a>
   <ul>
-  <li><a href="#import-python-packages" id="toc-import-python-packages" class="nav-link" data-scroll-target="#import-python-packages">Import Python packages</a></li>
   <li><a href="#authenticate-initialize-earth-engine" id="toc-authenticate-initialize-earth-engine" class="nav-link" data-scroll-target="#authenticate-initialize-earth-engine">Authenticate &amp; Initialize Earth Engine</a></li>
+  </ul></li>
   <li><a href="#start-dask-cluster" id="toc-start-dask-cluster" class="nav-link" data-scroll-target="#start-dask-cluster">Start Dask Cluster</a></li>
   <li><a href="#submit-jobs" id="toc-submit-jobs" class="nav-link" data-scroll-target="#submit-jobs">Submit Jobs</a></li>
-  <li><a href="#shut-down-the-cluster" id="toc-shut-down-the-cluster" class="nav-link" data-scroll-target="#shut-down-the-cluster">Shut down the cluster</a></li>
-  </ul></li>
+  <li><a href="#shut-down-the-cluster." id="toc-shut-down-the-cluster." class="nav-link" data-scroll-target="#shut-down-the-cluster.">Shut down the cluster.</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/VorGeo/earthengine-dask/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -201,12 +206,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">earthengine-dask</h1>
+<h1 class="title">core</h1>
 </div>
 
 <div>
   <div class="description">
-    Scale up concurrent requests to Earth Engine interactive endpoints with Dask
+    Core functionality for distributing Earth Engine requests among Dask workers.
   </div>
 </div>
 
@@ -224,34 +229,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
-<section id="prerequisites" class="level1">
-<h1>Prerequisites</h1>
-<ul>
-<li>A <a href="https://earthengine.google.com/">Google Earth Engine</a> account.</li>
-<li>Access to a Google Cloud Platform (GCP) <a href="https://developers.google.com/earth-engine/cloud/earthengine_cloud_project_setup">project with the Earth Engine API enabled</a>.</li>
-<li>A <a href="https://www.coiled.io/">Coiled</a> account that is <a href="https://docs.coiled.io/user_guide/setup/gcp/cli.html">setup to use the GCP project</a>.</li>
-</ul>
+<hr>
+<section id="clustergee" class="level3">
+<h3 class="anchored" data-anchor-id="clustergee">ClusterGEE</h3>
+<blockquote class="blockquote">
+<pre><code> ClusterGEE (**kwargs)</code></pre>
+</blockquote>
+<p>Create a Dask cluster with Coiled</p>
+<hr>
 </section>
-<section id="installation" class="level1">
-<h1>Installation</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">TODO...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="initearthengine" class="level3">
+<h3 class="anchored" data-anchor-id="initearthengine">InitEarthEngine</h3>
+<blockquote class="blockquote">
+<pre><code> InitEarthEngine (**kwargs)</code></pre>
+</blockquote>
+<p>Interface to extend the Worker</p>
+<p>A worker plugin enables custom code to run at different stages of the Workers’ lifecycle.</p>
+<p>A plugin enables custom code to run at each of step of a Workers’s life. Whenever such an event happens, the corresponding method on this class will be called. Note that the user code always runs within the Worker’s main thread.</p>
+<p>To implement a plugin:</p>
+<ol type="1">
+<li>inherit from this class</li>
+<li>override some of its methods</li>
+<li>register the plugin using :meth:<code>Client.register_plugin&lt;distributed.Client.register_plugin&gt;</code>.</li>
+</ol>
+<p>The <code>idempotent</code> attribute is used to control whether or not the plugin should be ignored upon registration if a worker plugin with the same name already exists. If <code>True</code>, the plugin is ignored, otherwise the existing plugin is replaced. Defaults to <code>False</code>.</p>
 </section>
-<section id="how-to-use" class="level1">
-<h1>How to use</h1>
-<section id="import-python-packages" class="level2">
-<h2 class="anchored" data-anchor-id="import-python-packages">Import Python packages</h2>
-<div id="cell-7" class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> altair <span class="im">as</span> alt</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ee</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> earthengine_dask.core <span class="im">import</span> ClusterGEE</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> google.auth</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
+<section id="try-it-out" class="level1">
+<h1>Try it out</h1>
+<p>Create a cluster and run a few jobs.</p>
 <section id="authenticate-initialize-earth-engine" class="level2">
 <h2 class="anchored" data-anchor-id="authenticate-initialize-earth-engine">Authenticate &amp; Initialize Earth Engine</h2>
 <p>Get credentials and the GCP project ID, authenticating if necessary.</p>
-<div id="cell-10" class="cell">
+<div id="cell-7" class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    credentials, project_id <span class="op">=</span> google.auth.default()</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> google.auth.exceptions.DefaultCredentialsError:</span>
@@ -261,67 +270,279 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>ee.Initialize(credentials<span class="op">=</span>credentials, project<span class="op">=</span>project_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="start-dask-cluster" class="level2">
-<h2 class="anchored" data-anchor-id="start-dask-cluster">Start Dask Cluster</h2>
+</section>
+<section id="start-dask-cluster" class="level1">
+<h1>Start Dask Cluster</h1>
 <p>Start up a Earth Engine enabled cluster. This may take a few minutes to complete.</p>
-<div id="cell-12" class="cell">
+<div id="cell-9" class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>cluster <span class="op">=</span> ClusterGEE(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">'test-class-cluster'</span>,</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    n_workers<span class="op">=</span><span class="dv">2</span>,</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    worker_cpu<span class="op">=</span><span class="dv">8</span>,</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    region<span class="op">=</span><span class="st">'us-central1'</span>,</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"bd99132cc5d2414bae5f07da5a0c4423","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">╭──────────────────────────────── <span style="color: #008000; text-decoration-color: #008000; font-weight: bold">Package Info</span> ────────────────────────────────╮
+│                                 ╷                                            │
+│  <span style="font-weight: bold"> Package                       </span>│<span style="font-weight: bold"> Note                                     </span>  │
+│ ╶───────────────────────────────┼──────────────────────────────────────────╴ │
+│   coiled_local_earthengine_dask │ Source wheel built from                    │
+│                                 │ ~/Documents/GitHub/VorGeo/earthengine-da   │
+│                                 │ sk                                         │
+│                                 ╵                                            │
+╰──────────────────────────────────────────────────────────────────────────────╯
+</pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"cf9ec93f03cc47aaaca15ccc16b7451e","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Google Application Default Credentials have been written to a file on your Coiled VM(s).
+These credentials will potentially be valid until explicitly revoked by running
+gcloud auth application-default revoke</code></pre>
+</div>
 </div>
 <p>Retrieve a client for the cluster, and display it.</p>
-<div id="cell-14" class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> cluster.get_client()</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>client</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-11" class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> cluster.get_client()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>client</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div>
+    <div style="width: 24px; height: 24px; background-color: #e1e1e1; border: 3px solid #9D9D9D; border-radius: 5px; position: absolute;"> </div>
+    <div style="margin-left: 48px;">
+        <h3 style="margin-bottom: 0px;" class="anchored" data-anchor-id="start-dask-cluster">Client</h3>
+        <p style="color: #9D9D9D; margin-bottom: 0px;">Client-341c500a-1a18-11ef-a127-fe11494405b6</p>
+        
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Connection method:</strong> Cluster object</td>
+<td style="text-align: left;"><strong>Cluster type:</strong> __main__.ClusterGEE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Dashboard:</strong> <a href="https://cluster-yonlb.dask.host/5-Z6mZfjyt4tqQfj/status" target="_blank">https://cluster-yonlb.dask.host/5-Z6mZfjyt4tqQfj/status</a></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<details>
+<summary style="margin-bottom: 20px;">
+<section id="cluster-info" class="level3" style="display: inline;">
+<h3 style="display: inline;" class="anchored" data-anchor-id="cluster-info">Cluster Info</h3>
+</section></summary>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-mod-trusted jp-OutputArea-output">
+<div style="width: 24px; height: 24px; background-color: #e1e1e1; border: 3px solid #9D9D9D; border-radius: 5px; position: absolute;">
+
 </div>
+<div style="margin-left: 48px;">
+<section id="clustergee" class="level3" style="margin-bottom: 0px; margin-top: 0px;">
+<h3 style="margin-bottom: 0px; margin-top: 0px;" class="anchored" data-anchor-id="clustergee">ClusterGEE</h3>
+<p>test-class-cluster</p>
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Dashboard:</strong> <a href="https://cluster-yonlb.dask.host/5-Z6mZfjyt4tqQfj/status" target="_blank">https://cluster-yonlb.dask.host/5-Z6mZfjyt4tqQfj/status</a></td>
+<td style="text-align: left;"><strong>Workers:</strong> 2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Total threads:</strong> 16</td>
+<td style="text-align: left;"><strong>Total memory:</strong> 61.16 GiB</td>
+</tr>
+</tbody>
+</table>
+<details>
+<summary style="margin-bottom: 20px;">
+</summary></details></section>
+<section id="scheduler-info" class="level3" style="display: inline;">
+<h3 style="display: inline;" class="anchored" data-anchor-id="scheduler-info">Scheduler Info</h3>
+
+<div style="">
+<div>
+<div style="width: 24px; height: 24px; background-color: #FFF7E5; border: 3px solid #FF6132; border-radius: 5px; position: absolute;">
+
+</div>
+<section id="scheduler" class="level3" style="margin-bottom: 0px;">
+<h3 style="margin-bottom: 0px;" class="anchored" data-anchor-id="scheduler">Scheduler</h3>
+<p>Scheduler-8bf53968-c2c3-4940-a600-764df6827abe</p>
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Comm:</strong> tls://10.2.0.19:8786</td>
+<td style="text-align: left;"><strong>Workers:</strong> 2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Dashboard:</strong> <a href="http://10.2.0.19:8787/status" target="_blank">http://10.2.0.19:8787/status</a></td>
+<td style="text-align: left;"><strong>Total threads:</strong> 16</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Started:</strong> Just now</td>
+<td style="text-align: left;"><strong>Total memory:</strong> 61.16 GiB</td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="submit-jobs" class="level2">
-<h2 class="anchored" data-anchor-id="submit-jobs">Submit Jobs</h2>
+</div>
+<details style="margin-left: 48px;">
+<summary style="margin-bottom: 20px;">
+<section id="workers" class="level3" style="display: inline;">
+<h3 style="display: inline;" class="anchored" data-anchor-id="workers">Workers</h3>
+</section></summary>
+<div style="margin-bottom: 20px;">
+<div style="width: 24px; height: 24px; background-color: #DBF5FF; border: 3px solid #4CC9FF; border-radius: 5px; position: absolute;">
+
+</div>
+<div style="margin-left: 48px;">
+<details>
+<summary>
+<section id="worker-test-class-cluster-worker-76cee40116" class="level4" style="margin-bottom: 0px; display: inline;">
+<h4 style="margin-bottom: 0px; display: inline;" class="anchored" data-anchor-id="worker-test-class-cluster-worker-76cee40116">Worker: test-class-cluster-worker-76cee40116</h4>
+</section></summary>
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Comm:</strong> tls://10.2.0.18:32815</td>
+<td style="text-align: left;"><strong>Total threads:</strong> 8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Dashboard:</strong> <a href="http://10.2.0.18:8787/status" target="_blank">http://10.2.0.18:8787/status</a></td>
+<td style="text-align: left;"><strong>Memory:</strong> 30.58 GiB</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Nanny:</strong> tls://10.2.0.18:40609</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td colspan="2" style="text-align: left;"><strong>Local directory:</strong> /scratch/dask-scratch-space/worker-intc7_no</td>
+</tr>
+</tbody>
+</table>
+</details>
+</div></div></details></div></section>
+</div>
+</div>
+<div style="margin-bottom: 20px;">
+<div style="width: 24px; height: 24px; background-color: #DBF5FF; border: 3px solid #4CC9FF; border-radius: 5px; position: absolute;">
+
+</div>
+<div style="margin-left: 48px;">
+<details>
+<summary>
+<section id="worker-test-class-cluster-worker-8c5bae00ca" class="level4" style="margin-bottom: 0px; display: inline;">
+<h4 style="margin-bottom: 0px; display: inline;" class="anchored" data-anchor-id="worker-test-class-cluster-worker-8c5bae00ca">Worker: test-class-cluster-worker-8c5bae00ca</h4>
+</section></summary>
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Comm:</strong> tls://10.2.0.17:35433</td>
+<td style="text-align: left;"><strong>Total threads:</strong> 8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Dashboard:</strong> <a href="http://10.2.0.17:8787/status" target="_blank">http://10.2.0.17:8787/status</a></td>
+<td style="text-align: left;"><strong>Memory:</strong> 30.58 GiB</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Nanny:</strong> tls://10.2.0.17:43433</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td colspan="2" style="text-align: left;"><strong>Local directory:</strong> /scratch/dask-scratch-space/worker-1ec95udn</td>
+</tr>
+</tbody>
+</table>
+</details></div></div></details></div></div></div></div></div></section>
+</main></div>
+
+
+
+
+
+
+
+            
+            
+        
+        
+
+    
+
+
+        
+    
+
+            
+        
+
+    
+
+
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/VorGeo/earthengine-dask/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer><section id="submit-jobs" class="level1">
+<h1>Submit Jobs</h1>
 <p>Test it out by: - Defining a function that can be distributed, - Submitting jobs running the function to workers, - Gathering the results locally, and - Displaying the results</p>
+<div id="cell-13" class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write a function that can be run by the cluster workers. </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_country_stats(country_name):</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    country <span class="op">=</span> (</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        ee.FeatureCollection(<span class="st">'USDOS/LSIB_SIMPLE/2017'</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>          .<span class="bu">filter</span>(ee.Filter.eq(<span class="st">'country_na'</span>, country_name))</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    elev <span class="op">=</span> (</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        ee.ImageCollection(<span class="st">"COPERNICUS/DEM/GLO30"</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>          .select(<span class="st">'DEM'</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>          .mosaic()</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">'country'</span>: country_name, </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">'area_km2'</span>: country.geometry().area().multiply(<span class="fl">1e-6</span>).<span class="bu">round</span>().getInfo(), </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">'mean_elev'</span>: elev.reduceRegion(reducer<span class="op">=</span>ee.Reducer.mean(),</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>                                       geometry<span class="op">=</span>country.geometry(),</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>                                       scale<span class="op">=</span><span class="dv">10000</span>,</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>                                       ).get(<span class="st">'DEM'</span>).getInfo(),</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Create and submit jobs to among the workers.</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>submitted_jobs <span class="op">=</span> [</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    client.submit(get_country_stats, country)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> country <span class="kw">in</span> [<span class="st">'Abyei Area'</span>, <span class="st">'Zimbabwe'</span>]</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Gather up the results and display them.</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> client.gather(submitted_jobs)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>[{'country': 'Abyei Area', 'area_km2': 10460, 'mean_elev': 402.5921903247955},
+ {'country': 'Zimbabwe', 'area_km2': 391916, 'mean_elev': 973.2955548809969}]</code></pre>
+</div>
+</div>
+<p>Display a scatter plot of the data.</p>
+</section>
+<section id="shut-down-the-cluster." class="level1">
+<h1>Shut down the cluster.</h1>
 <div id="cell-16" class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get a list of countries to analyze.</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>country_fc <span class="op">=</span> ee.FeatureCollection(<span class="st">'USDOS/LSIB_SIMPLE/2017'</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>country_list <span class="op">=</span> country_fc.aggregate_array(<span class="st">'country_na'</span>).distinct().sort().getInfo()</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Write a function that can be run by the cluster workers. </span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_country_stats(country_name):</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    country <span class="op">=</span> country_fc.<span class="bu">filter</span>(ee.Filter.eq(<span class="st">'country_na'</span>, country_name))</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    elev <span class="op">=</span> ee.ImageCollection(<span class="st">"COPERNICUS/DEM/GLO30"</span>).select(<span class="st">'DEM'</span>).mosaic()</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">'country'</span>: country_name, </span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">'area_km2'</span>: country.geometry().area().multiply(<span class="fl">1e-6</span>).<span class="bu">round</span>().getInfo(), </span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">'mean_elev'</span>: elev.reduceRegion(reducer<span class="op">=</span>ee.Reducer.mean(),</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                                       geometry<span class="op">=</span>country.geometry(),</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>                                       scale<span class="op">=</span><span class="dv">10000</span>,</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                                       ).get(<span class="st">'DEM'</span>).getInfo(),</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Create and submit jobs to among the workers.</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>submitted_jobs <span class="op">=</span> [</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    client.submit(get_country_stats, country)</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> country <span class="kw">in</span> country_list</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Gather up the results and display them.</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> client.gather(submitted_jobs)</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(results)</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="shut-down-the-cluster" class="level2">
-<h2 class="anchored" data-anchor-id="shut-down-the-cluster">Shut down the cluster</h2>
-<div id="cell-18" class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>cluster.shutdown()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cluster.shutdown()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
 </section>
-</section>
 
-</main> <!-- /main -->
+ <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -709,9 +930,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-</div> <!-- /content -->
+ <!-- /content -->
 
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/VorGeo/earthengine-dask/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+</body></html>

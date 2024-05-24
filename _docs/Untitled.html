@@ -6,7 +6,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Scale up concurrent requests to Earth Engine interactive endpoints with Dask">
 
 <title>earthengine-dask</title>
 <style>
@@ -143,7 +142,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">earthengine-dask</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Untitled.html">Untitled.html</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -157,7 +156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">earthengine-dask</span></a>
   </div>
 </li>
@@ -169,7 +168,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Untitled.html" class="sidebar-item-text sidebar-link">
+  <a href="./Untitled.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Untitled.html</span></a>
   </div>
 </li>
@@ -179,147 +178,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link active" data-scroll-target="#prerequisites">Prerequisites</a></li>
-  <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a></li>
-  <li><a href="#how-to-use" id="toc-how-to-use" class="nav-link" data-scroll-target="#how-to-use">How to use</a>
-  <ul>
-  <li><a href="#import-python-packages" id="toc-import-python-packages" class="nav-link" data-scroll-target="#import-python-packages">Import Python packages</a></li>
-  <li><a href="#authenticate-initialize-earth-engine" id="toc-authenticate-initialize-earth-engine" class="nav-link" data-scroll-target="#authenticate-initialize-earth-engine">Authenticate &amp; Initialize Earth Engine</a></li>
-  <li><a href="#start-dask-cluster" id="toc-start-dask-cluster" class="nav-link" data-scroll-target="#start-dask-cluster">Start Dask Cluster</a></li>
-  <li><a href="#submit-jobs" id="toc-submit-jobs" class="nav-link" data-scroll-target="#submit-jobs">Submit Jobs</a></li>
-  <li><a href="#shut-down-the-cluster" id="toc-shut-down-the-cluster" class="nav-link" data-scroll-target="#shut-down-the-cluster">Shut down the cluster</a></li>
-  </ul></li>
-  </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/VorGeo/earthengine-dask/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">earthengine-dask</h1>
+
+
+
+<div id="6261e774-6a0d-455c-83d2-7f381e48f66a" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>adm2 <span class="op">=</span> ee.FeatureCollection(<span class="st">"WM/geoLab/geoBoundaries/600/ADM2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-
-<div>
-  <div class="description">
-    Scale up concurrent requests to Earth Engine interactive endpoints with Dask
-  </div>
-</div>
-
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
-<section id="prerequisites" class="level1">
-<h1>Prerequisites</h1>
-<ul>
-<li>A <a href="https://earthengine.google.com/">Google Earth Engine</a> account.</li>
-<li>Access to a Google Cloud Platform (GCP) <a href="https://developers.google.com/earth-engine/cloud/earthengine_cloud_project_setup">project with the Earth Engine API enabled</a>.</li>
-<li>A <a href="https://www.coiled.io/">Coiled</a> account that is <a href="https://docs.coiled.io/user_guide/setup/gcp/cli.html">setup to use the GCP project</a>.</li>
-</ul>
-</section>
-<section id="installation" class="level1">
-<h1>Installation</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">TODO...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="how-to-use" class="level1">
-<h1>How to use</h1>
-<section id="import-python-packages" class="level2">
-<h2 class="anchored" data-anchor-id="import-python-packages">Import Python packages</h2>
-<div id="cell-7" class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> altair <span class="im">as</span> alt</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ee</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> earthengine_dask.core <span class="im">import</span> ClusterGEE</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> google.auth</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="authenticate-initialize-earth-engine" class="level2">
-<h2 class="anchored" data-anchor-id="authenticate-initialize-earth-engine">Authenticate &amp; Initialize Earth Engine</h2>
-<p>Get credentials and the GCP project ID, authenticating if necessary.</p>
-<div id="cell-10" class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    credentials, project_id <span class="op">=</span> google.auth.default()</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> google.auth.exceptions.DefaultCredentialsError:</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>gcloud auth application<span class="op">-</span>default login</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    credentials, project_id <span class="op">=</span> google.auth.default()</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>ee.Initialize(credentials<span class="op">=</span>credentials, project<span class="op">=</span>project_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="start-dask-cluster" class="level2">
-<h2 class="anchored" data-anchor-id="start-dask-cluster">Start Dask Cluster</h2>
-<p>Start up a Earth Engine enabled cluster. This may take a few minutes to complete.</p>
-<div id="cell-12" class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>cluster <span class="op">=</span> ClusterGEE(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">'test-class-cluster'</span>,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    n_workers<span class="op">=</span><span class="dv">2</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    worker_cpu<span class="op">=</span><span class="dv">8</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    region<span class="op">=</span><span class="st">'us-central1'</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Retrieve a client for the cluster, and display it.</p>
-<div id="cell-14" class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> cluster.get_client()</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>client</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="submit-jobs" class="level2">
-<h2 class="anchored" data-anchor-id="submit-jobs">Submit Jobs</h2>
-<p>Test it out by: - Defining a function that can be distributed, - Submitting jobs running the function to workers, - Gathering the results locally, and - Displaying the results</p>
-<div id="cell-16" class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get a list of countries to analyze.</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>country_fc <span class="op">=</span> ee.FeatureCollection(<span class="st">'USDOS/LSIB_SIMPLE/2017'</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>country_list <span class="op">=</span> country_fc.aggregate_array(<span class="st">'country_na'</span>).distinct().sort().getInfo()</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Write a function that can be run by the cluster workers. </span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_country_stats(country_name):</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    country <span class="op">=</span> country_fc.<span class="bu">filter</span>(ee.Filter.eq(<span class="st">'country_na'</span>, country_name))</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    elev <span class="op">=</span> ee.ImageCollection(<span class="st">"COPERNICUS/DEM/GLO30"</span>).select(<span class="st">'DEM'</span>).mosaic()</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">'country'</span>: country_name, </span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">'area_km2'</span>: country.geometry().area().multiply(<span class="fl">1e-6</span>).<span class="bu">round</span>().getInfo(), </span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">'mean_elev'</span>: elev.reduceRegion(reducer<span class="op">=</span>ee.Reducer.mean(),</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                                       geometry<span class="op">=</span>country.geometry(),</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>                                       scale<span class="op">=</span><span class="dv">10000</span>,</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                                       ).get(<span class="st">'DEM'</span>).getInfo(),</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Create and submit jobs to among the workers.</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>submitted_jobs <span class="op">=</span> [</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    client.submit(get_country_stats, country)</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> country <span class="kw">in</span> country_list</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Gather up the results and display them.</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> client.gather(submitted_jobs)</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(results)</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="shut-down-the-cluster" class="level2">
-<h2 class="anchored" data-anchor-id="shut-down-the-cluster">Shut down the cluster</h2>
-<div id="cell-18" class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>cluster.shutdown()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cce3b2c0-7d53-4103-81b4-b3df0bc114c5" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>forest_baseline <span class="op">=</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
-</section>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -714,4 +589,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/VorGeo/earthengine-dask/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/VorGeo/earthengine-dask/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

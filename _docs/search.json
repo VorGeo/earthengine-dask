@@ -1,0 +1,82 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "earthengine-dask",
+    "section": "",
+    "text": "A Google Earth Engine account.\nAccess to a Google Cloud Platform (GCP) project with the Earth Engine API enabled.\nA Coiled account that is setup to use the GCP project.",
+    "crumbs": [
+      "earthengine-dask"
+    ]
+  },
+  {
+    "objectID": "index.html#import-python-packages",
+    "href": "index.html#import-python-packages",
+    "title": "earthengine-dask",
+    "section": "Import Python packages",
+    "text": "Import Python packages\n\nimport altair as alt\nimport ee\nfrom earthengine_dask.core import ClusterGEE\nimport google.auth\nimport pandas as pd",
+    "crumbs": [
+      "earthengine-dask"
+    ]
+  },
+  {
+    "objectID": "index.html#authenticate-initialize-earth-engine",
+    "href": "index.html#authenticate-initialize-earth-engine",
+    "title": "earthengine-dask",
+    "section": "Authenticate & Initialize Earth Engine",
+    "text": "Authenticate & Initialize Earth Engine\nGet credentials and the GCP project ID, authenticating if necessary.\n\ntry:\n    credentials, project_id = google.auth.default()\nexcept google.auth.exceptions.DefaultCredentialsError:\n    !gcloud auth application-default login\n    credentials, project_id = google.auth.default()\n\nee.Initialize(credentials=credentials, project=project_id)",
+    "crumbs": [
+      "earthengine-dask"
+    ]
+  },
+  {
+    "objectID": "index.html#start-dask-cluster",
+    "href": "index.html#start-dask-cluster",
+    "title": "earthengine-dask",
+    "section": "Start Dask Cluster",
+    "text": "Start Dask Cluster\nStart up a Earth Engine enabled cluster. This may take a few minutes to complete.\n\ncluster = ClusterGEE(\n    name='test-class-cluster',\n    n_workers=2,\n    worker_cpu=8,\n    region='us-central1',\n)\n\nRetrieve a client for the cluster, and display it.\n\nclient = cluster.get_client()\nclient",
+    "crumbs": [
+      "earthengine-dask"
+    ]
+  },
+  {
+    "objectID": "index.html#submit-jobs",
+    "href": "index.html#submit-jobs",
+    "title": "earthengine-dask",
+    "section": "Submit Jobs",
+    "text": "Submit Jobs\nTest it out by: - Defining a function that can be distributed, - Submitting jobs running the function to workers, - Gathering the results locally, and - Displaying the results\n\n# Get a list of countries to analyze.\ncountry_fc = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017')\ncountry_list = country_fc.aggregate_array('country_na').distinct().sort().getInfo()\n\n# Write a function that can be run by the cluster workers. \ndef get_country_stats(country_name):\n    country = country_fc.filter(ee.Filter.eq('country_na', country_name))\n    elev = ee.ImageCollection(\"COPERNICUS/DEM/GLO30\").select('DEM').mosaic()\n    return {\n        'country': country_name, \n        'area_km2': country.geometry().area().multiply(1e-6).round().getInfo(), \n        'mean_elev': elev.reduceRegion(reducer=ee.Reducer.mean(),\n                                       geometry=country.geometry(),\n                                       scale=10000,\n                                       ).get('DEM').getInfo(),\n    }\n\n# Create and submit jobs to among the workers.\nsubmitted_jobs = [\n    client.submit(get_country_stats, country)\n    for country in country_list\n]\n\n# Gather up the results and display them.\nresults = client.gather(submitted_jobs)\ndf = pd.DataFrame(results)\ndf",
+    "crumbs": [
+      "earthengine-dask"
+    ]
+  },
+  {
+    "objectID": "index.html#shut-down-the-cluster",
+    "href": "index.html#shut-down-the-cluster",
+    "title": "earthengine-dask",
+    "section": "Shut down the cluster",
+    "text": "Shut down the cluster\n\ncluster.shutdown()",
+    "crumbs": [
+      "earthengine-dask"
+    ]
+  },
+  {
+    "objectID": "00_core.html#authenticate-initialize-earth-engine",
+    "href": "00_core.html#authenticate-initialize-earth-engine",
+    "title": "core",
+    "section": "Authenticate & Initialize Earth Engine",
+    "text": "Authenticate & Initialize Earth Engine\nGet credentials and the GCP project ID, authenticating if necessary.\n\ntry:\n    credentials, project_id = google.auth.default()\nexcept google.auth.exceptions.DefaultCredentialsError:\n    !gcloud auth application-default login\n    credentials, project_id = google.auth.default()\n\nee.Initialize(credentials=credentials, project=project_id)",
+    "crumbs": [
+      "core"
+    ]
+  },
+  {
+    "objectID": "Untitled.html",
+    "href": "Untitled.html",
+    "title": "earthengine-dask",
+    "section": "",
+    "text": "adm2 = ee.FeatureCollection(\"WM/geoLab/geoBoundaries/600/ADM2\")\n\n\n\nforest_baseline =",
+    "crumbs": [
+      "Untitled.html"
+    ]
+  }
+]
