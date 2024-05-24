@@ -4,3 +4,5 @@
 
 
 /.quarto/
+*.pyc
+*-checkpoint.ipynb
