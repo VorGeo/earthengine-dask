@@ -21,7 +21,7 @@ class InitEarthEngine(dask.distributed.WorkerPlugin):
         logging.info('InitEarthEngine setup')  # This appears in the dask cluster logs.
         import ee
         ee.Initialize(**self.kwargs)
-        
+
 
 class ClusterGEE(coiled.Cluster):
     def __init__(self, **kwargs):
