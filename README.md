@@ -89,9 +89,9 @@ def get_country_stats(country_name):
                                        ).get('DEM').getInfo(),
     }
 
-# Create and submit jobs to among the workers.
+# Create and submit jobs among the workers.
 submitted_jobs = [
-    client.submit(get_country_stats, country)
+    client.submit(get_country_stats, country, retries=5)
     for country in country_list
 ]
 
