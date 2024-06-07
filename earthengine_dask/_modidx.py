@@ -14,4 +14,9 @@ d = { 'settings': { 'branch': 'master',
                                        'earthengine_dask.core.InitEarthEngine.__init__': ( 'core.html#initearthengine.__init__',
                                                                                            'earthengine_dask/core.py'),
                                        'earthengine_dask.core.InitEarthEngine.setup': ( 'core.html#initearthengine.setup',
-                                                                                        'earthengine_dask/core.py')}}}
+                                                                                        'earthengine_dask/core.py'),
+                                       'earthengine_dask.core.LocalClusterGEE': ('core.html#localclustergee', 'earthengine_dask/core.py'),
+                                       'earthengine_dask.core.LocalClusterGEE.__init__': ( 'core.html#localclustergee.__init__',
+                                                                                           'earthengine_dask/core.py'),
+                                       'earthengine_dask.core.LocalClusterGEE.get_client': ( 'core.html#localclustergee.get_client',
+                                                                                             'earthengine_dask/core.py')}}}
