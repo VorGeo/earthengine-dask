@@ -6,3 +6,8 @@
 /.quarto/
 *.pyc
 *-checkpoint*
+build/lib/
+_proc/*
+_proc/pixi.lock
+.virtual_documents/*
+.DS_Store
