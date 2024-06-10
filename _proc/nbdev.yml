@@ -1,9 +1,0 @@
-project:
-  output-dir: _docs
-
-website:
-  title: "earthengine-dask"
-  site-url: "https://VorGeo.github.io/earthengine-dask"
-  description: "Scale up concurrent requests to Earth Engine interactive endpoints with Dask"
-  repo-branch: master
-  repo-url: "https://github.com/VorGeo/earthengine-dask"
