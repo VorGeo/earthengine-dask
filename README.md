@@ -14,8 +14,16 @@
 
 # Installation
 
-``` sh
-TODO...
+Install using pixi:
+
+``` shell
+pixi add --pypi 'earthengine_dask @ git+https://github.com/VorGeo/earthengine-dask.git'
+```
+
+Install using pip:
+
+``` shell
+pip install git+https://github.com/VorGeo/earthengine-dask.git#egg=earthengine-dask
 ```
 
 # How to use
@@ -40,7 +48,11 @@ try:
 except google.auth.exceptions.DefaultCredentialsError:
     !gcloud auth application-default login
     credentials, project_id = google.auth.default()
-
+try:
+    ee.Initialize(credentials=credentials, project=project_id)
+except google.auth.exceptions.RefreshError:
+    !gcloud auth application-default login
+    credentials, project_id = google.auth.default()
 ee.Initialize(credentials=credentials, project=project_id)
 ```
 
