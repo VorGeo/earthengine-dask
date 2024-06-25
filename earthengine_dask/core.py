@@ -14,7 +14,6 @@ class InitEarthEngine(dask.distributed.WorkerPlugin):
     def __init__(self, **kwargs):
         print('InitEarthEngine.init: starting')  # This appears in the notebook output where the cluster is initiated.
         self.kwargs = kwargs
-        print(f'InitEarthEngine.init: kwargs = {kwargs}')
 
     def setup(self, worker):
         # Print statements output to the dask cluster logs (viewable via Coiled dashboard)
